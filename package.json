@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "css-loader": "^3.2.0",
+    "eslint": "^6.8.0",
     "html-webpack-plugin": "^3.2.0",
     "vue-loader": "^15.7.2",
     "vue-style-loader": "^4.1.2",
@@ -13,7 +16,6 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.3"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "webpack-dev-server --open",
     "build": "webpack --config ./webpack.config.js",
