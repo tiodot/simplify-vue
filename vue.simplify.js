@@ -3,8 +3,6 @@
  * (c) 2014-2019 Evan You
  * Released under the MIT License.
  */
-/*  */
-
 var emptyObject = Object.freeze({});
 
 // These helpers produce better VM code in JS engines due to their
@@ -58,10 +56,6 @@ var _toString = Object.prototype.toString;
  */
 function isPlainObject (obj) {
   return _toString.call(obj) === '[object Object]'
-}
-
-function isRegExp (v) {
-  return _toString.call(v) === '[object RegExp]'
 }
 
 /**
@@ -321,7 +315,7 @@ var LIFECYCLE_HOOKS = [
   'errorCaptured'
 ];
 
-/*  */
+
 
 
 
@@ -413,7 +407,7 @@ var config = ({
   _lifecycleHooks: LIFECYCLE_HOOKS
 });
 
-/*  */
+
 
 /**
  * unicode letters used for parsing html tags, component names and property paths.
@@ -524,7 +518,7 @@ function popTarget () {
   Dep.target = targetStack[targetStack.length - 1];
 }
 
-/*  */
+
 
 var VNode = function VNode (
   tag,
@@ -864,7 +858,7 @@ function dependArray (value) {
   }
 }
 
-/*  */
+
 
 /**
  * Option overwriting strategies are functions that handle
@@ -1223,7 +1217,7 @@ function resolveAsset (
   return res
 }
 
-/*  */
+
 
 
 
@@ -1446,7 +1440,7 @@ function _traverse (val, seen) {
   }
 }
 
-/*  */
+
 
 var normalizeEvent = cached(function (name) {
   var passive = name.charAt(0) === '&';
@@ -1516,7 +1510,7 @@ function updateListeners (
   }
 }
 
-/*  */
+
 
 function mergeVNodeHook (def, hookKey, hook) {
   if (def instanceof VNode) {
@@ -1600,7 +1594,7 @@ function checkProp (
   return false
 }
 
-/*  */
+
 
 // The template compiler attempts to minimize the need for normalization by
 // statically analyzing the template at compile time.
@@ -1687,7 +1681,7 @@ function normalizeArrayChildren (children, nestedIndex) {
   return res
 }
 
-/*  */
+
 
 function initProvide (vm) {
   var provide = vm.$options.provide;
@@ -1743,7 +1737,7 @@ function resolveInject (inject, vm) {
   }
 }
 
-/*  */
+
 
 
 
@@ -1794,7 +1788,7 @@ function isWhitespace (node) {
   return (node.isComment && !node.asyncFactory) || node.text === ' '
 }
 
-/*  */
+
 
 function normalizeScopedSlots (
   slots,
@@ -1866,7 +1860,7 @@ function proxyNormalSlot(slots, key) {
   return function () { return slots[key]; }
 }
 
-/*  */
+
 
 /**
  * Runtime helper for rendering v-for lists.
@@ -1911,7 +1905,7 @@ function renderList (
   return ret
 }
 
-/*  */
+
 
 /**
  * Runtime helper for rendering <slot>
@@ -1942,7 +1936,7 @@ function renderSlot (
   }
 }
 
-/*  */
+
 
 /**
  * Runtime helper for resolving filters
@@ -1951,7 +1945,7 @@ function resolveFilter (id) {
   return resolveAsset(this.$options, 'filters', id, true) || identity
 }
 
-/*  */
+
 
 function isKeyNotMatch (expect, actual) {
   if (Array.isArray(expect)) {
@@ -1983,7 +1977,7 @@ function checkKeyCodes (
   }
 }
 
-/*  */
+
 
 /**
  * Runtime helper for merging v-bind="object" into a VNode's data.
@@ -2033,7 +2027,7 @@ function bindObjectProps (
   return data
 }
 
-/*  */
+
 
 /**
  * Runtime helper for rendering static trees.
@@ -2094,7 +2088,7 @@ function markStaticNode (node, key, isOnce) {
   node.isOnce = isOnce;
 }
 
-/*  */
+
 
 function bindObjectListeners (data, value) {
   if (value) {
@@ -2108,7 +2102,7 @@ function bindObjectListeners (data, value) {
   return data
 }
 
-/*  */
+
 
 function resolveScopedSlots (
   fns, // see flow/vnode
@@ -2131,7 +2125,7 @@ function resolveScopedSlots (
   return res
 }
 
-/*  */
+
 
 function bindDynamicKeys (baseObj, values) {
   for (var i = 0; i < values.length; i += 2) {
@@ -2150,7 +2144,7 @@ function prependModifier (value, symbol) {
   return typeof value === 'string' ? symbol + value : value
 }
 
-/*  */
+
 
 function installRenderHelpers (target) {
   target._o = markOnce;
@@ -2172,7 +2166,7 @@ function installRenderHelpers (target) {
   target._p = prependModifier;
 }
 
-/*  */
+
 
 function FunctionalRenderContext (
   data,
@@ -2310,13 +2304,13 @@ function mergeProps (to, from) {
   }
 }
 
-/*  */
 
-/*  */
 
-/*  */
 
-/*  */
+
+
+
+
 
 // inline hooks to be invoked on component VNodes during patch
 var componentVNodeHooks = {
@@ -2543,7 +2537,7 @@ function transformModel (options, data) {
   }
 }
 
-/*  */
+
 
 var SIMPLE_NORMALIZE = 1;
 var ALWAYS_NORMALIZE = 2;
@@ -2668,7 +2662,7 @@ function registerDeepBindings (data) {
   }
 }
 
-/*  */
+
 
 function initRender (vm) {
   vm._vnode = null; // the root of the child tree
@@ -2753,7 +2747,7 @@ function renderMixin (Vue) {
   };
 }
 
-/*  */
+
 
 function ensureCtor (comp, base) {
   if (
@@ -2880,29 +2874,6 @@ function resolveAsyncComponent (
   }
 }
 
-/*  */
-
-function isAsyncPlaceholder (node) {
-  return node.isComment && node.asyncFactory
-}
-
-/*  */
-
-function getFirstComponentChild (children) {
-  if (Array.isArray(children)) {
-    for (var i = 0; i < children.length; i++) {
-      var c = children[i];
-      if (isDef(c) && (isDef(c.componentOptions) || isAsyncPlaceholder(c))) {
-        return c
-      }
-    }
-  }
-}
-
-/*  */
-
-/*  */
-
 function initEvents (vm) {
   vm._events = Object.create(null);
   vm._hasHookEvent = false;
@@ -3024,7 +2995,7 @@ function eventsMixin (Vue) {
   };
 }
 
-/*  */
+
 
 var activeInstance = null;
 
@@ -3446,7 +3417,7 @@ function queueWatcher (watcher) {
   }
 }
 
-/*  */
+
 
 
 
@@ -3649,7 +3620,7 @@ Watcher.prototype.teardown = function teardown () {
   }
 };
 
-/*  */
+
 
 var sharedPropertyDefinition = {
   enumerable: true,
@@ -3896,7 +3867,7 @@ function stateMixin (Vue) {
   };
 }
 
-/*  */
+
 
 var uid$3 = 0;
 
@@ -4006,7 +3977,7 @@ eventsMixin(Vue);
 lifecycleMixin(Vue);
 renderMixin(Vue);
 
-/*  */
+
 
 function initUse (Vue) {
   Vue.use = function (plugin) {
@@ -4028,7 +3999,7 @@ function initUse (Vue) {
   };
 }
 
-/*  */
+
 
 function initMixin$1 (Vue) {
   Vue.mixin = function (mixin) {
@@ -4037,7 +4008,7 @@ function initMixin$1 (Vue) {
   };
 }
 
-/*  */
+
 
 function initExtend (Vue) {
   /**
@@ -4126,7 +4097,7 @@ function initComputed$1 (Comp) {
   }
 }
 
-/*  */
+
 
 function initAssetRegisters (Vue) {
   /**
@@ -4155,142 +4126,6 @@ function initAssetRegisters (Vue) {
     };
   });
 }
-
-/*  */
-
-
-
-function getComponentName (opts) {
-  return opts && (opts.Ctor.options.name || opts.tag)
-}
-
-function matches (pattern, name) {
-  if (Array.isArray(pattern)) {
-    return pattern.indexOf(name) > -1
-  } else if (typeof pattern === 'string') {
-    return pattern.split(',').indexOf(name) > -1
-  } else if (isRegExp(pattern)) {
-    return pattern.test(name)
-  }
-  /* istanbul ignore next */
-  return false
-}
-
-function pruneCache (keepAliveInstance, filter) {
-  var cache = keepAliveInstance.cache;
-  var keys = keepAliveInstance.keys;
-  var _vnode = keepAliveInstance._vnode;
-  for (var key in cache) {
-    var cachedNode = cache[key];
-    if (cachedNode) {
-      var name = getComponentName(cachedNode.componentOptions);
-      if (name && !filter(name)) {
-        pruneCacheEntry(cache, key, keys, _vnode);
-      }
-    }
-  }
-}
-
-function pruneCacheEntry (
-  cache,
-  key,
-  keys,
-  current
-) {
-  var cached$$1 = cache[key];
-  if (cached$$1 && (!current || cached$$1.tag !== current.tag)) {
-    cached$$1.componentInstance.$destroy();
-  }
-  cache[key] = null;
-  remove(keys, key);
-}
-
-var patternTypes = [String, RegExp, Array];
-
-var KeepAlive = {
-  name: 'keep-alive',
-  abstract: true,
-
-  props: {
-    include: patternTypes,
-    exclude: patternTypes,
-    max: [String, Number]
-  },
-
-  created: function created () {
-    this.cache = Object.create(null);
-    this.keys = [];
-  },
-
-  destroyed: function destroyed () {
-    for (var key in this.cache) {
-      pruneCacheEntry(this.cache, key, this.keys);
-    }
-  },
-
-  mounted: function mounted () {
-    var this$1 = this;
-
-    this.$watch('include', function (val) {
-      pruneCache(this$1, function (name) { return matches(val, name); });
-    });
-    this.$watch('exclude', function (val) {
-      pruneCache(this$1, function (name) { return !matches(val, name); });
-    });
-  },
-
-  render: function render () {
-    var slot = this.$slots.default;
-    var vnode = getFirstComponentChild(slot);
-    var componentOptions = vnode && vnode.componentOptions;
-    if (componentOptions) {
-      // check pattern
-      var name = getComponentName(componentOptions);
-      var ref = this;
-      var include = ref.include;
-      var exclude = ref.exclude;
-      if (
-        // not included
-        (include && (!name || !matches(include, name))) ||
-        // excluded
-        (exclude && name && matches(exclude, name))
-      ) {
-        return vnode
-      }
-
-      var ref$1 = this;
-      var cache = ref$1.cache;
-      var keys = ref$1.keys;
-      var key = vnode.key == null
-        // same constructor may get registered as different local components
-        // so cid alone is not enough (#3269)
-        ? componentOptions.Ctor.cid + (componentOptions.tag ? ("::" + (componentOptions.tag)) : '')
-        : vnode.key;
-      if (cache[key]) {
-        vnode.componentInstance = cache[key].componentInstance;
-        // make current key freshest
-        remove(keys, key);
-        keys.push(key);
-      } else {
-        cache[key] = vnode;
-        keys.push(key);
-        // prune oldest entry
-        if (this.max && keys.length > parseInt(this.max)) {
-          pruneCacheEntry(cache, keys[0], keys, this._vnode);
-        }
-      }
-
-      vnode.data.keepAlive = true;
-    }
-    return vnode || (slot && slot[0])
-  }
-};
-
-var builtInComponents = {
-  KeepAlive: KeepAlive
-};
-
-/*  */
 
 function initGlobalAPI (Vue) {
   // config
@@ -4324,11 +4159,7 @@ function initGlobalAPI (Vue) {
     Vue.options[type + 's'] = Object.create(null);
   });
 
-  // this is used to identify the "base" constructor to extend all plain-object
-  // components with in Weex's multi-instance scenarios.
   Vue.options._base = Vue;
-
-  extend(Vue.options.components, builtInComponents);
 
   initUse(Vue);
   initMixin$1(Vue);
@@ -4338,13 +4169,6 @@ function initGlobalAPI (Vue) {
 
 initGlobalAPI(Vue);
 
-Object.defineProperty(Vue.prototype, '$ssrContext', {
-  get: function get () {
-    /* istanbul ignore next */
-    return this.$vnode && this.$vnode.ssrContext
-  }
-});
-
 // expose FunctionalRenderContext for ssr runtime helper installation
 Object.defineProperty(Vue, 'FunctionalRenderContext', {
   value: FunctionalRenderContext
@@ -4352,7 +4176,7 @@ Object.defineProperty(Vue, 'FunctionalRenderContext', {
 
 Vue.version = '2.6.6';
 
-/*  */
+
 
 // these are reserved for web because they are directly compiled away
 // during template compilation
@@ -4405,7 +4229,7 @@ var isFalsyAttrValue = function (val) {
   return val == null || val === false
 };
 
-/*  */
+
 
 function genClassForVnode (vnode) {
   var data = vnode.data;
@@ -4486,7 +4310,7 @@ function stringifyObject (value) {
   return res
 }
 
-/*  */
+
 
 var namespaceMap = {
   svg: 'http://www.w3.org/2000/svg',
@@ -4559,7 +4383,7 @@ function isUnknownElement (tag) {
 
 var isTextInputType = makeMap('text,number,password,search,email,tel,url');
 
-/*  */
+
 
 /**
  * Query an element selector if it's not an element already.
@@ -4577,7 +4401,7 @@ function query (el) {
   }
 }
 
-/*  */
+
 
 function createElement$1 (tagName, vnode) {
   var elm = document.createElement(tagName);
@@ -4650,7 +4474,7 @@ var nodeOps = /*#__PURE__*/Object.freeze({
   setStyleScope: setStyleScope
 });
 
-/*  */
+
 
 var ref = {
   create: function create (_, vnode) {
@@ -5354,7 +5178,7 @@ function createPatchFunction (backend) {
   }
 }
 
-/*  */
+
 
 var directives = {
   create: updateDirectives,
@@ -5476,7 +5300,7 @@ var baseModules = [
   directives
 ];
 
-/*  */
+
 
 function updateAttrs (oldVnode, vnode) {
   var opts = vnode.componentOptions;
@@ -5555,7 +5379,7 @@ var attrs = {
   update: updateAttrs
 };
 
-/*  */
+
 
 function updateClass (oldVnode, vnode) {
   var el = vnode.elm;
@@ -5593,20 +5417,20 @@ var klass = {
   update: updateClass
 };
 
-/*  */
 
-/*  */
 
-/*  */
 
-/*  */
+
+
+
+
 
 // in some cases, the event used has to be determined at runtime
 // so we used some reserved tokens during compile.
 var RANGE_TOKEN = '__r';
 var CHECKBOX_RADIO_TOKEN = '__c';
 
-/*  */
+
 
 // normalize v-model event tokens that can only be determined at runtime.
 // it's important to place the event as the first in the array because
@@ -5684,7 +5508,7 @@ var events = {
   update: updateDOMListeners
 };
 
-/*  */
+
 
 var svgContainer;
 
@@ -5795,8 +5619,6 @@ var domProps = {
   update: updateDOMProps
 };
 
-/*  */
-
 var parseStyleText = cached(function (cssText) {
   var res = {};
   var listDelimiter = /;(?![^(]*\))/g;
@@ -5865,7 +5687,7 @@ function getStyle (vnode, checkChild) {
   return res
 }
 
-/*  */
+
 
 var cssVarRE = /^--/;
 var importantRE = /\s*!important$/;
@@ -5965,7 +5787,7 @@ var platformModules = [
   style
 ];
 
-/*  */
+
 
 // the directive module should be applied last, after all
 // built-in modules have been applied.
