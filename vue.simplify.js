@@ -310,8 +310,6 @@ function once (fn) {
   }
 }
 
-var SSR_ATTR = 'data-server-rendered';
-
 var ASSET_TYPES = [
   'component',
   'directive',
@@ -329,8 +327,7 @@ var LIFECYCLE_HOOKS = [
   'destroyed',
   'activated',
   'deactivated',
-  'errorCaptured',
-  'serverPrefetch'
+  'errorCaptured'
 ];
 
 /*  */
@@ -341,7 +338,6 @@ var config = ({
   /**
    * Option merge strategies (used in core/util/options)
    */
-  // $flow-disable-line
   optionMergeStrategies: Object.create(null),
 
   /**
@@ -352,7 +348,7 @@ var config = ({
   /**
    * Show production mode tip message on boot?
    */
-  productionTip: "production" !== 'production',
+  productionTip: false,
 
   /**
    * Whether to record perf
@@ -473,11 +469,6 @@ function parsePath (path) {
   }
 }
 
-/*  */
-
-// can we use __proto__?
-var hasProto = '__proto__' in {};
-
 // Browser environment sniffing
 var inBrowser = typeof window !== 'undefined';
 
@@ -492,13 +483,6 @@ var hasSymbol =
 
 // 异常提示，错误栈等
 var warn = noop;
-var tip = noop;
-var generateComponentTrace = (noop); // work around flow check
-var formatComponentName = (noop);
-
-if (false) { var repeat, classify, classifyRE, hasConsole; }
-
-/*  */
 
 var uid = 0;
 
@@ -528,8 +512,6 @@ Dep.prototype.depend = function depend () {
 Dep.prototype.notify = function notify () {
   // stabilize the subscriber list first
   var subs = this.subs.slice();
-  // 埋坑？如果本地开发环境没有问题，线上却有问题怎么办？
-  if (false) {}
   for (var i = 0, l = subs.length; i < l; i++) {
     subs[i].update();
   }
@@ -812,8 +794,6 @@ function defineReactive$$1 (
       if (newVal === value || (newVal !== newVal && value !== value)) {
         return
       }
-      /* eslint-enable no-self-compare */
-      if (false) {}
       // #7981: for accessor properties without setter
       if (getter && !setter) { return }
       if (setter) {
@@ -833,8 +813,6 @@ function defineReactive$$1 (
  * already exist.
  */
 function set (target, key, val) {
-  if (false
-  ) {}
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.length = Math.max(target.length, key);
     target.splice(key, 1, val);
@@ -862,8 +840,6 @@ function set (target, key, val) {
  * Delete a property and trigger change if necessary.
  */
 function del (target, key) {
-  if (false
-  ) {}
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.splice(key, 1);
     return
@@ -905,11 +881,6 @@ function dependArray (value) {
  * value into the final value.
  */
 var strats = config.optionMergeStrategies;
-
-/**
- * Options with restrictions
- */
-if (false) {}
 
 /**
  * Helper that recursively merges two data objects together.
@@ -1047,9 +1018,7 @@ LIFECYCLE_HOOKS.forEach(function (hook) {
  */
 function mergeAssets (
   parentVal,
-  childVal,
-  vm,
-  key
+  childVal
 ) {
   var res = Object.create(parentVal || null);
   if (childVal) {
@@ -1072,13 +1041,10 @@ ASSET_TYPES.forEach(function (type) {
  */
 strats.watch = function (
   parentVal,
-  childVal,
-  vm,
-  key
+  childVal
 ) {
   /* istanbul ignore if */
   if (!childVal) { return Object.create(parentVal || null) }
-  if (false) {}
   if (!parentVal) { return childVal }
   var ret = {};
   extend(ret, parentVal);
@@ -1104,12 +1070,7 @@ strats.inject =
 strats.computed = function (
   parentVal,
   childVal,
-  vm,
-  key
 ) {
-  if (childVal && "production" !== 'production') {
-    assertObjectType(key, childVal, vm);
-  }
   if (!parentVal) { return childVal }
   var ret = Object.create(null);
   extend(ret, parentVal);
@@ -1127,29 +1088,6 @@ var defaultStrat = function (parentVal, childVal) {
     : childVal
 };
 
-/**
- * Validate component names
- */
-function checkComponents (options) {
-  for (var key in options.components) {
-    validateComponentName(key);
-  }
-}
-
-function validateComponentName (name) {
-  if (!new RegExp(("^[a-zA-Z][\\-\\.0-9_" + unicodeLetters + "]*$")).test(name)) {
-    warn(
-      'Invalid component name: "' + name + '". Component names ' +
-      'should conform to valid custom element name in html5 specification.'
-    );
-  }
-  if (isBuiltInTag(name) || config.isReservedTag(name)) {
-    warn(
-      'Do not use built-in or reserved HTML elements as component ' +
-      'id: ' + name
-    );
-  }
-}
 
 /**
  * Ensure all props option syntax are normalized into the
@@ -1157,7 +1095,7 @@ function validateComponentName (name) {
  */
 // 支持形式 props: ['a', 'b'] === {a: {type: null}, b: {type: null}}
 //         props: {a: 'String', b: {type: 'String'}} === {a: {type: 'String'}, b: {type: 'String'}}
-function normalizeProps (options, vm) {
+function normalizeProps (options) {
   var props = options.props;
   if (!props) { return }
   var res = {};
@@ -1169,7 +1107,7 @@ function normalizeProps (options, vm) {
       if (typeof val === 'string') {
         name = camelize(val);
         res[name] = { type: null };
-      } else if (false) {}
+      }
     }
   } else if (isPlainObject(props)) {
     for (var key in props) {
@@ -1179,7 +1117,7 @@ function normalizeProps (options, vm) {
         ? val
         : { type: val };
     }
-  } else if (false) {}
+  } 
   options.props = res;
 }
 
@@ -1238,8 +1176,6 @@ function mergeOptions (
   child,
   vm
 ) {
-  if (false) {}
-
   if (typeof child === 'function') {
     child = child.options;
   }
@@ -1303,7 +1239,6 @@ function resolveAsset (
   if (hasOwn(assets, PascalCaseId)) { return assets[PascalCaseId] }
   // fallback to prototype chain
   var res = assets[id] || assets[camelizedId] || assets[PascalCaseId];
-  if (false) {}
   return res
 }
 
@@ -1344,9 +1279,6 @@ function validateProp (
     observe(value);
     toggleObserving(prevShouldObserve);
   }
-  if (
-    false
-  ) {}
   return value
 }
 
@@ -1359,8 +1291,6 @@ function getPropDefaultValue (vm, prop, key) {
     return undefined
   }
   var def = prop.default;
-  // warn against non-factory defaults for Object & Array
-  if (false) {}
   // the raw prop value was also undefined from previous render,
   // return previous default value to avoid unnecessary watcher trigger
   if (vm && vm.$options.propsData &&
@@ -1579,9 +1509,9 @@ function updateListeners (
   createOnceHandler,
   vm
 ) {
-  var name, def$$1, cur, old, event;
+  var name, cur, old, event;
   for (name in on) {
-    def$$1 = cur = on[name];
+    cur = on[name];
     old = oldOn[name];
     event = normalizeEvent(name);
     if (isUndef(cur)) {
@@ -1794,10 +1724,7 @@ function initInjections (vm) {
   if (result) {
     toggleObserving(false);
     Object.keys(result).forEach(function (key) {
-      /* istanbul ignore else */
-      if (false) {} else {
-        defineReactive$$1(vm, key, result[key]);
-      }
+      defineReactive$$1(vm, key, result[key]);
     });
     toggleObserving(true);
   }
@@ -1830,7 +1757,7 @@ function resolveInject (inject, vm) {
           result[key] = typeof provideDefault === 'function'
             ? provideDefault.call(vm)
             : provideDefault;
-        } else if (false) {}
+        } 
       }
     }
     return result
@@ -2021,7 +1948,6 @@ function renderSlot (
   if (scopedSlotFn) { // scoped slot
     props = props || {};
     if (bindObject) {
-      if (false) {}
       props = extend(extend({}, bindObject), props);
     }
     nodes = scopedSlotFn(props) || fallback;
@@ -2239,7 +2165,7 @@ function bindDynamicKeys (baseObj, values) {
     var key = values[i];
     if (typeof key === 'string' && key) {
       baseObj[values[i]] = values[i + 1];
-    } else if (false) {}
+    }
   }
   return baseObj
 }
@@ -2392,7 +2318,7 @@ function createFunctionalComponent (
   }
 }
 
-function cloneAndMarkFunctionalResult (vnode, data, contextVm, options, renderContext) {
+function cloneAndMarkFunctionalResult (vnode, data, contextVm, options) {
   // #7817 clone node before setting fnContext, otherwise if the node is reused
   // (e.g. it was from a cached normal slot) the fnContext causes named slots
   // that should not be matched to match.
@@ -2507,7 +2433,6 @@ function createComponent (
   // if at this stage it's not a constructor or an async component factory,
   // reject.
   if (typeof Ctor !== 'function') {
-    if (false) {}
     return
   }
 
@@ -2690,9 +2615,6 @@ function _createElement (
     // in case of component :is set to falsy value
     return createEmptyVNode()
   }
-  // warn against non-primitive key
-  if (false
-  ) {}
   // support single function children as default scoped slot
   if (Array.isArray(children) &&
     typeof children[0] === 'function'
@@ -2852,7 +2774,6 @@ function renderMixin (Vue) {
     }
     // return empty vnode in case the render function errored out
     if (!(vnode instanceof VNode)) {
-      if (false) {}
       vnode = createEmptyVNode();
     }
     // set parent
@@ -3141,7 +3062,6 @@ function eventsMixin (Vue) {
 /*  */
 
 var activeInstance = null;
-var isUpdatingChildComponent = false;
 
 function setActiveInstance(vm) {
   var prevActiveInstance = activeInstance;
@@ -3268,17 +3188,12 @@ function mountComponent (
   vm.$el = el;
   if (!vm.$options.render) {
     vm.$options.render = createEmptyVNode;
-    if (false) {}
   }
   callHook(vm, 'beforeMount');
 
-  var updateComponent;
-  /* istanbul ignore if */
-  if (false) {} else {
-    updateComponent = function () {
-      vm._update(vm._render(), hydrating);
-    };
-  }
+  var updateComponent = function () {
+    vm._update(vm._render(), hydrating);
+  };
 
   // we set this to vm._watcher inside the watcher's constructor
   // since the watcher's initial patch may call $forceUpdate (e.g. inside child
@@ -4144,8 +4059,6 @@ function resolveModifiedOptions (Ctor) {
 }
 
 function Vue (options) {
-  if (false
-  ) {}
   this._init(options);
 }
 
@@ -4210,7 +4123,6 @@ function initExtend (Vue) {
     }
 
     var name = extendOptions.name || Super.options.name;
-    if (false) {}
 
     var Sub = function VueComponent (options) {
       this._init(options);
@@ -5463,13 +5375,6 @@ function createPatchFunction (backend) {
         patchVnode(oldVnode, vnode, insertedVnodeQueue, null, null, removeOnly);
       } else {
         if (isRealElement) {
-          // mounting to a real element
-          // check if this is server-rendered content and if we can perform
-          // a successful hydration.
-          if (oldVnode.nodeType === 1 && oldVnode.hasAttribute(SSR_ATTR)) {
-            oldVnode.removeAttribute(SSR_ATTR);
-            hydrating = true;
-          }
           if (isTrue(hydrating)) {
             if (hydrate(oldVnode, vnode, insertedVnodeQueue)) {
               invokeInsertHook(vnode, insertedVnodeQueue, true);
