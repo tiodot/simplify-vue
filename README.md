@@ -7,3 +7,6 @@
 
 本地开发： npm start
 编译： npm run build
+
+# 功能
+支持简单的文档渲染
