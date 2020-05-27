@@ -94,6 +94,7 @@ export default class Watcher {
 
   run() {
     if (this.active) {
+      // 执行update函数， 这里会触发 _update
       const value = this.get();
       if (value !== this.value || isObject(value) || this.deep) {
         const oldValue = this.value;
@@ -178,7 +179,7 @@ let index = 0
 
 function queueWatcher (watcher) {
   const id = watcher.id
-  if (has[id] === null) {
+  if (!has[id]) {
     has[id] = true
     if (!flushing) {
       queue.push(watcher)

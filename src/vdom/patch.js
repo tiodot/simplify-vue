@@ -1,6 +1,6 @@
-import VNode, {cloneVNode} from './vnode'
+import VNode from './vnode'
 import * as NodeOps from '../runtime/node-ops'
-import {isDef, isUndef, isTrue, isPrimitive} from '../util/base'
+import {isDef, isUndef, isTrue, isPrimitive, todo} from '../util/base'
 
 export const emptyNode = new VNode('', {}, {})
 
@@ -32,6 +32,48 @@ function removeNodes(parentElm, vnodes, startIdx, endIdx) {
       removeNode(ch.elm)
     }
   }
+}
+
+function updateChildren(parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
+  let oldStartIdx = 0
+  let newStartIdx = 0
+  let oldEndIdx = oldCh.length - 1
+  let oldStartVnode = oldCh[0]
+  let oldEndVnode = oldCh[oldEndIdx]
+  let newEndIdx = newCh.length - 1
+  let newStartVnode = newCh[0]
+  let newEndVnode = newCh[newEndIdx]
+  // let oldKeyToIdx, idxInOld, vnodeToMove, refElm
+  const canMove = !removeOnly
+  while(oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
+    if (isUndef(oldStartVnode)) {
+      oldStartVnode = oldCh[++oldStartIdx]
+    } else if (isUndef(oldEndVnode)) {
+      oldEndVnode = oldCh[--oldEndIdx]
+    } else if (sameVnode(oldStartVnode, newStartVnode)) {
+      patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue)
+      oldStartVnode = oldCh[++oldStartIdx]
+      newStartVnode = newCh[++newStartIdx]
+    } else if (sameVnode(oldEndVnode, newEndVnode)) {
+      patchVnode(oldEndVnode, newEndVnode, insertedVnodeQueue)
+      oldEndVnode = oldCh[--oldEndIdx]
+      newEndVnode = newCh[--newEndIdx]
+    } else if (sameVnode(oldStartVnode, newEndVnode)) {
+      // move right
+      patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue)
+      canMove && NodeOps.insertBefore(parentElm, oldStartVnode.elm, NodeOps.nextSibling(oldEndVnode.elm))
+    } else if (sameVnode(oldEndVnode, newStartVnode)) {
+      // move left
+      patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue)
+      canMove && NodeOps.insertBefore(parentElm, oldEndVnode.elm, oldStartVnode.elm)
+    } else {
+      // 没有可以复用的节点 TODO:
+    }
+  }
+}
+
+function addVnodes() {
+  todo('addVnodes')()
 }
 
 function createElm(vnode, insertedVnodeQueue, parentElm, refElm){
@@ -76,7 +118,43 @@ function insert(parent, elm, ref) {
 }
 
 function patchVnode(oldVnode, vnode, insertedVnodeQueue) {
- // TODO:
+  if (oldVnode === vnode) {
+    return;
+  }
+  const elm = (vnode.elm = oldVnode.elm)
+
+  const data = vnode.data
+  const oldCh = oldVnode.children
+  const ch = vnode.children
+
+  if (isDef(data) && isPatchable(vnode)) {
+    todo('支持可patch检测')()
+  }
+  if (isUndef(vnode.text)) {
+    if (isDef(oldCh) && isDef(ch)) {
+      if (oldCh !== ch) {
+        updateChildren(elm, oldCh, ch, insertedVnodeQueue)
+      }
+    } else if (isDef(ch)) {
+      if (isDef(oldVnode.text)) { // 更新文本
+        NodeOps.setTextContent(elm, '')
+      }
+      addVnodes(elm, null, ch, 0, ch.length - 1, insertedVnodeQueue)
+    } else if (isDef(oldCh)) {
+      removeNodes(elm, oldCh, 0, oldCh.length - 1)
+    } else if (isDef(oldVnode.text)) {
+      NodeOps.setTextContent(elm, '')
+    }
+  } else if (oldVnode.text !== vnode.text) {
+    NodeOps.setTextContent(elm, vnode.text)
+  }
+}
+
+function isPatchable(vnode) {
+  while(vnode.componentInstance) {
+    vnode = vnode.componentInstance._vnode
+  }
+  return isDef(vnode.tag)
 }
 
 
@@ -99,17 +177,17 @@ export default function patch(oldVnode, vnode) {
       if (isRealElement) {
         oldVnode = emptyNodeAt(oldVnode)
       }
-    }
 
-    const oldElm = oldVnode.elm
-    const parentElm = NodeOps.parentNode(oldElm)
+      const oldElm = oldVnode.elm
+      const parentElm = NodeOps.parentNode(oldElm)
 
-    createElm(vnode, insertedVnodeQueue, parentElm, NodeOps.nextSibling(oldElm))
-    
-    if (isDef(parentElm)) {
-      removeNodes(parentElm, [oldVnode], 0, 0)
-    } else if (isDef(oldVnode.tag)) {
-      // invokeDestroyHook(oldVnode)
+      createElm(vnode, insertedVnodeQueue, parentElm, NodeOps.nextSibling(oldElm))
+
+      if (isDef(parentElm)) {
+        removeNodes(parentElm, [oldVnode], 0, 0)
+      } else if (isDef(oldVnode.tag)) {
+        // invokeDestroyHook(oldVnode)
+      }
     }
     // invokeInsertHook
     return vnode.elm

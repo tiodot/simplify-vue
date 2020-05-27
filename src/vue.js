@@ -1,5 +1,6 @@
 import {observe} from './observer'
-import {isReserved, proxy} from './util'
+import Watcher from './observer/watcher'
+import {isReserved, proxy, noop} from './util'
 import {createElement} from './vdom/create-element'
 import patch from './vdom/patch'
 
@@ -10,6 +11,9 @@ export default class Vue {
 
     this._isVue = true // 避免属性被响应式
 
+    // lifecycle 相关变量初始化
+    this._watcher = null
+
     // render
     this._vnode = null
     this.$createElement = (a, b, c, d) => createElement(this, a, b, c, d, true)
@@ -18,10 +22,24 @@ export default class Vue {
     // 1. props TODO:
     // 2. method TODO:
     // 3. data
+    this._watchers = []
+    this.initData()
 
     if (this.$options.el) {
       this.$mount(this.$options.el)
     }
+
+  }
+  initData() {
+    let data = this.$options.data
+    data = this._data = typeof data === 'function' ? data.call(this, this) : (data || {})
+    const keys = Object.keys(data)
+    for (let key of keys) {
+      if (!isReserved(key)) {
+        proxy(this, '_data', key)
+      }
+    }
+    observe(data, true)
   }
 
   // 组件更新
@@ -49,7 +67,7 @@ export default class Vue {
     const updateComponent = () => {
       this._update(this._render())
     }
-    updateComponent()
+    this._watcher = new Watcher(this, updateComponent, noop)
     return this
   }
 }
