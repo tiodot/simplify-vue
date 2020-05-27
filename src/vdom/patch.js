@@ -127,9 +127,6 @@ function patchVnode(oldVnode, vnode, insertedVnodeQueue) {
   const oldCh = oldVnode.children
   const ch = vnode.children
 
-  if (isDef(data) && isPatchable(vnode)) {
-    todo('支持可patch检测')()
-  }
   if (isUndef(vnode.text)) {
     if (isDef(oldCh) && isDef(ch)) {
       if (oldCh !== ch) {
@@ -149,14 +146,6 @@ function patchVnode(oldVnode, vnode, insertedVnodeQueue) {
     NodeOps.setTextContent(elm, vnode.text)
   }
 }
-
-function isPatchable(vnode) {
-  while(vnode.componentInstance) {
-    vnode = vnode.componentInstance._vnode
-  }
-  return isDef(vnode.tag)
-}
-
 
 
 export default function patch(oldVnode, vnode) {
