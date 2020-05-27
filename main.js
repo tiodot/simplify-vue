@@ -4,10 +4,10 @@ new Vue({
   el: '#app',
   data() {
     return {
-      message: 'hello'
+      message: '简单文本渲染'
     }
   },
   render(h) {
-    return h('div', {}, this.message)
+    return h('div', null, this.message)
   },
 })
