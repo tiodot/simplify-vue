@@ -7,7 +7,7 @@ import {
   hyphenate
 } from './base'
 import {set, observe} from '../observer/index'
-import {LIFECYCLE_HOOKS, ASSET_TYPES} from '../constants'
+// import {LIFECYCLE_HOOKS, ASSET_TYPES} from '../constants'
 
 const strategies = Object.create(null)
 
@@ -110,9 +110,9 @@ function mergeHook (parentVal, childVal) {
   return res
 }
 
-LIFECYCLE_HOOKS.forEach(hook => {
-  strategies[hook] = mergeHook
-})
+// LIFECYCLE_HOOKS.forEach(hook => {
+//   strategies[hook] = mergeHook
+// })
 
 /**
  * Assets
@@ -129,9 +129,9 @@ function mergeAssets (parentVal, childVal) {
   return res
 }
 
-ASSET_TYPES.forEach(type => {
-  strategies[type] = mergeAssets
-})
+// ASSET_TYPES.forEach(type => {
+//   strategies[type] = mergeAssets
+// })
 
 /**
  * Watchers.
