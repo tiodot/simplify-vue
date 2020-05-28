@@ -12,7 +12,7 @@ export default class Vue {
     this.initData()
 
     if (this.$options.el) {
-      this.$mount(this.$options.el)
+      this.mount(this.$options.el)
     }
 
   }
@@ -30,23 +30,19 @@ export default class Vue {
     }
   }
 
-  // 组件更新
-  _update(vnode) {
+  update(vnode) {
     this.$el = patch(this.$el, vnode)
-
-    if (this.$el) {
-      this.$el.__vue__ = this
-    }
+    this.$el.__vue__ = this
   }
-  _render() {
+  render() {
     const render = this.$options.render
     // 返回 vnode
     return render.call(this, this.$createElement)
   }
 
-  $mount(el) {
+  mount(el) {
     this.$el = el = document.querySelector(el)
-    this._update(this._render())
+    this.update(this.render())
     return this
   }
 }
