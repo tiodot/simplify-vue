@@ -17,6 +17,6 @@ new Vue({
     }
   },
   render(h) {
-    return h('div', {}, this.message)
+    return h('div', null, this.message)
   },
 })

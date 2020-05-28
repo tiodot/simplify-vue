@@ -1,4 +1,4 @@
-import {remove} from '../util/base'
+import {remove} from './util.js'
 
 let uid = 0
 export default class Dep {
@@ -8,6 +8,8 @@ export default class Dep {
   }
 
   addSub(sub) {
+    // 判重
+    if (this.subs.includes(sub)) return
     this.subs.push(sub) // sub 是 Watcher 的实例
   }
 
@@ -17,7 +19,7 @@ export default class Dep {
 
   depend() {
     if (Dep.target) {
-      Dep.target.addDep(this)
+      this.addSub(Dep.target)
     }
   }
 
