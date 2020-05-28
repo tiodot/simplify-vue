@@ -9,6 +9,14 @@
 编译： npm run build
 
 # 功能
+## 简单文本的响应式渲染
+相关概念：
+1. Watcher/Observer/Dep：依赖收集以及响应更新
+
+渲染流程：
+
+new Vue -> mount ->  watcher (render(属性依赖收集) -> update -> patch -> dom)  <- data 变更
+
 ## 简单文本渲染
 主要是完成渲染流程：
 
@@ -24,11 +32,3 @@
 
 1. VNode： 使用js的对象描述一个 DOM节点
 2. patch： 由VNode生成真实DOM节点的过程描述
-
-## 简单文本的响应式渲染
-相关概念：
-1. Watcher/Observer/Dep：依赖收集以及响应更新
-
-渲染流程：
-
-new Vue -> mount ->  watcher (render(属性依赖收集) -> update -> patch -> dom)  <- data 变更
