@@ -3,9 +3,7 @@ import Dep from './dep'
 import VNode from './vnode'
 
 export default class Observer {
-  constructor (value) {
-    this.value = value
-    
+  constructor (value) {    
     value.__ob__ = this
 
     this.walk(value)
