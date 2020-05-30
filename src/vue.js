@@ -1,8 +1,8 @@
 import {observe} from './observer'
-import Watcher from './watcher'
-import patch from './patch'
-import VNode from './vnode'
-import {noop} from './util.js'
+import Watcher from './observer/watcher'
+import patch from './vdom/patch'
+import VNode from './vdom/vnode'
+import {noop} from './util'
 
 export default class Vue {
   constructor(options) {

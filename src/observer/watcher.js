@@ -1,4 +1,4 @@
-import { noop, nextTick } from "./util.js";
+import { noop, nextTick } from "../util";
 import { pushTarget, popTarget } from "./dep";
 
 let uid = 0;

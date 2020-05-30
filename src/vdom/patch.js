@@ -1,6 +1,6 @@
 import VNode from './vnode'
 import * as NodeOps from './node-ops'
-import {isDef, isUndef, isPrimitive} from './util.js'
+import {isDef, isUndef, isPrimitive} from '../util'
 
 function sameVnode(a, b) {
   return (

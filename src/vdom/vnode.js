@@ -1,4 +1,4 @@
-import {isPrimitive} from './util.js'
+import {isPrimitive} from '../util'
 
 export default class VNode {
   constructor(tag, data, children, text, elm) {
