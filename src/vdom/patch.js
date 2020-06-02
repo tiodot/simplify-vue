@@ -30,6 +30,11 @@ function removeNode(el) {
  * @param {*} refElm 
  */
 function createElm(vnode, parentElm, refElm){
+
+  if (createComponent(vnode, parentElm, refElm)) {
+    return
+  }
+
   const children = vnode.children
   const tag = vnode.tag
 
@@ -50,6 +55,20 @@ function createChildren(vnode, children) {
     }
   } else if (isPrimitive(vnode.text)) {
     NodeOps.appendChild(vnode.elm, NodeOps.createTextNode(vnode.text))
+  }
+}
+
+function createComponent (vnode, parentElm, refElm) {
+  let i = vnode.data
+  if (isDef(i)) {
+    if (isDef(i = i.hook) && isDef(i = i.init)) {
+      i(vnode, false)
+    }
+    if (isDef(vnode.componentInstance)) {
+      vnode.elm = vnode.componentInstance.$el
+      insert(parentElm, vnode.elm, refElm)
+      return true
+    }
   }
 }
 
@@ -91,23 +110,27 @@ function patchVnode(oldVnode, vnode) {
 
 export default function patch(oldVnode, vnode) {
   // 不需要挂载的组件渲染
-  const isRealElement = isDef(oldVnode.nodeType)
-  if (!isRealElement && sameVnode(oldVnode, vnode)) {
-    patchVnode(oldVnode, vnode)
+  if (isUndef(oldVnode)) {
+    createElm(vnode)
   } else {
-    if (isRealElement) {
-      oldVnode = emptyNodeAt(oldVnode)
-    }
+    const isRealElement = isDef(oldVnode.nodeType)
+    if (!isRealElement && sameVnode(oldVnode, vnode)) {
+      patchVnode(oldVnode, vnode)
+    } else {
+      if (isRealElement) {
+        oldVnode = emptyNodeAt(oldVnode)
+      }
 
-    const oldElm = oldVnode.elm
-    const parentElm = NodeOps.parentNode(oldElm)
+      const oldElm = oldVnode.elm
+      const parentElm = NodeOps.parentNode(oldElm)
 
-    // 通过VNode创建DOM元素，需要递归创建子元素
-    createElm(vnode, parentElm, NodeOps.nextSibling(oldElm))
+      // 通过VNode创建DOM元素，需要递归创建子元素
+      createElm(vnode, parentElm, NodeOps.nextSibling(oldElm))
 
-    if (isDef(parentElm)) {
-      // 移除挂载的dom节点
-      removeNode(oldVnode.elm)
+      if (isDef(parentElm)) {
+        // 移除挂载的dom节点
+        removeNode(oldVnode.elm)
+      }
     }
   }
   return vnode.elm
