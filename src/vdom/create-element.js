@@ -26,11 +26,10 @@ export function createElement (context, tag, data, children) {
     if (isReservedTag(tag)) {
       return new VNode(tag, data, children)
     } else {
-      console.log('TODO:')
+      console.log('TODO:为组件内引入做准备')
     }
     
   } else {
-    console.log('create component')
     return createComponent(tag, data, context, children)
   }
 }
