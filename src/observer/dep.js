@@ -1,4 +1,4 @@
-import {remove} from './util.js'
+import {remove} from '../util'
 
 let uid = 0
 export default class Dep {

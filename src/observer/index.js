@@ -1,6 +1,6 @@
-import {hasOwn, isObject} from './util.js'
+import {hasOwn, isObject} from '../util'
 import Dep from './dep'
-import VNode from './vnode'
+import VNode from '../vdom/vnode'
 
 export default class Observer {
   constructor (value) {    

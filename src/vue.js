@@ -1,18 +1,29 @@
 import {observe} from './observer'
-import Watcher from './watcher'
-import patch from './patch'
-import VNode from './vnode'
-import {noop} from './util.js'
+import Watcher from './observer/watcher'
+import patch from './vdom/patch'
+import {noop} from './util'
+import {createElement} from './vdom/create-element'
+import {installRenderHelpers} from './instance/render-helpers'
+import {setActiveInstance} from './instance/lifecycle'
 
 export default class Vue {
   constructor(options) {
     // 需要渲染一个简单的data属性
     this.$options = options
+    this._self = this
     // render
     this._vnode = null
-    this.$createElement = (tag, data, children, text) => new VNode(tag, data, children, text)
+    this.$createElement = (tag, data, children) => createElement(this, tag, data, children)
 
     this._watchers = []
+
+    // lifecycle
+    const parent = options.parent
+    if (parent) {
+      parent.$children.push(this)
+    }
+    this.$parent = parent
+    this.$children = []
 
     this.initData()
 
@@ -40,8 +51,10 @@ export default class Vue {
   _update(vnode) {
     const prevVnode = this._vnode
     const prevEl = this.$el
+    const restoreActiveInstance = setActiveInstance(this)
     this._vnode = vnode
     this.$el = patch(prevVnode || this.$el, vnode)
+    restoreActiveInstance()
 
     if (prevEl) {
       prevEl.__vue__ = null
@@ -65,3 +78,5 @@ export default class Vue {
     return this
   }
 }
+
+installRenderHelpers(Vue.prototype)
