@@ -10,3 +10,11 @@ export function setActiveInstance(vm) {
   }
 }
 
+export function callHook(vm, hook) {
+  const handlers = vm.$options[hook]
+  if (handlers) {
+    for (let handler of handlers) {
+      handler.call(vm, vm)
+    }
+  }
+}

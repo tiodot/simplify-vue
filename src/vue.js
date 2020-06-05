@@ -1,22 +1,17 @@
 import {observe} from './observer'
 import Watcher from './observer/watcher'
 import patch from './vdom/patch'
-import {noop} from './util'
+import {noop, mergeOptions} from './util'
 import {createElement} from './vdom/create-element'
 import {installRenderHelpers} from './instance/render-helpers'
-import {setActiveInstance} from './instance/lifecycle'
+import {setActiveInstance, callHook} from './instance/lifecycle'
 
 export default class Vue {
   constructor(options) {
     // 需要渲染一个简单的data属性
-    this.$options = options
+    this.$options = mergeOptions({}, options)
+
     this._self = this
-    // render
-    this._vnode = null
-    this.$createElement = (tag, data, children) => createElement(this, tag, data, children)
-
-    this._watchers = []
-
     // lifecycle
     const parent = options.parent
     if (parent) {
@@ -24,8 +19,16 @@ export default class Vue {
     }
     this.$parent = parent
     this.$children = []
+    this._isMounted = false
 
+    // render
+    this._vnode = null
+    this.$createElement = (tag, data, children) => createElement(this, tag, data, children)
+    callHook(this, 'beforeCreate')
+    // state
+    this._watchers = []
     this.initData()
+    callHook(this, 'created')
 
     if (this.$options.el) {
       this.$mount(this.$options.el)
@@ -70,11 +73,23 @@ export default class Vue {
   }
 
   $mount(el) {
+    const vm = this
     this.$el = el = document.querySelector(el)
+    callHook(vm, 'beforeMount')
     const updateComponent = () => {
       this._update(this._render())
     }
-    new Watcher(this, updateComponent, noop)
+    new Watcher(this, updateComponent, {
+      before() {
+        if (vm._isMounted) {
+          callHook(vm, 'beforeUpdate')
+        }
+      }
+    })
+    if (!vm.$vnode) {
+      vm._isMounted = true
+      callHook(vm, 'mounted')
+    }
     return this
   }
 }
