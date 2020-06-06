@@ -94,4 +94,7 @@ export default class Vue {
   }
 }
 
+// fix chrome 异常
+Vue.config = {devtools: false}
+
 installRenderHelpers(Vue.prototype)
