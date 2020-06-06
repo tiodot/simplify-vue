@@ -7,4 +7,22 @@ new Vue({
   render(h) {
     return h(App)
   },
+  beforeCreate() {
+    console.log('[main.js hook]: beforeCreate')
+  },
+  created() {
+    console.log('[main.js hook]: created')
+  },
+  beforeMount() {
+    console.log('[main.js hook]: beforeMount')
+  },
+  mounted() {
+    console.log('[main.js hook]: mounted')
+  },
+  beforeUpdate() {
+    console.log('[main.js hook]: beforeUpdate')
+  },
+  updated() {
+    console.log('[main.js hook]: updated')
+  },
 })

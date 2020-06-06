@@ -13,22 +13,22 @@ export default {
     }
   },
   beforeCreate() {
-    console.log('[hook]: beforeCreate')
+    console.log('[App.vue hook]: beforeCreate')
   },
   created() {
-    console.log('[hook]: created')
+    console.log('[App.vue hook]: created')
   },
   beforeMount() {
-    console.log('[hook]: beforeMount')
+    console.log('[App.vue hook]: beforeMount')
   },
   mounted() {
-    console.log('[hook]: mounted')
+    console.log('[App.vue hook]: mounted')
   },
   beforeUpdate() {
-    console.log('[hook]: beforeUpdate')
+    console.log('[App.vue hook]: beforeUpdate')
   },
   updated() {
-    console.log('[hook]: updated')
+    console.log('[App.vue hook]: updated')
   },
 }
 </script>
