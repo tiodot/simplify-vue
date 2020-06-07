@@ -8,27 +8,15 @@
 本地开发： npm start
 编译： npm run build
 
-# 功能
-## 简单文本的响应式渲染
-相关概念：
-1. Watcher/Observer/Dep：依赖收集以及响应更新
+# 学习计划
+1. [简单文本渲染](https://juejin.im/post/5ece798e51882543275345e7)
+2. [简单文本响应式渲染](https://juejin.im/post/5ed1f4b451882542f9389129)
+3. [组件渲染](https://juejin.im/post/5edb03ae6fb9a047e96b3e09)
+4. [生命周期钩子函数实现](https://juejin.im/post/5edc5a1a6fb9a047d77ccca8)
+5. DOM属性渲染：class/style
+6. DOM事件绑定
+7. prop 属性实现
+8. 事件机制实现
+9. 列表渲染
+10. 指令：v-model/v-show
 
-渲染流程：
-
-new Vue -> mount ->  watcher (render(属性依赖收集) -> update -> patch -> dom)  <- data 变更
-
-## 简单文本渲染
-主要是完成渲染流程：
-
-1. Vue实例化
-2. 渲染步骤：new Vue -> mount -> render(生成VNode) -> update -> patch -> dom
-
-相关Vue内容：
-
-1. data 属性代理： 一般我们定义data都是一个函数，或者对象，Vue是如何实现可以直接从 实例上面取属性的
-2. 真实dom元素和Vue实例的关联，可以通过 dom.__vue__ 访问对应的组件实例
-
-相关概念：
-
-1. VNode： 使用js的对象描述一个 DOM节点
-2. patch： 由VNode生成真实DOM节点的过程描述
