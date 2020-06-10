@@ -1,5 +1,5 @@
 <template>
-  <div class="msg" :class="className">
+  <div class="msg" :class="className" :style="styleObj">
     {{message}}
   </div>
 </template>
@@ -10,7 +10,10 @@ export default {
   data() {
     return {
       message: '我是一个组件',
-      className: 'test'
+      className: 'test',
+      styleObj: {
+        color: '#f00'
+      }
     }
   }
 }
@@ -19,7 +22,6 @@ export default {
 <style>
   .msg {
     font-size: 14px;
-    font-weight: bold;
   }
   .test {
     background: rebeccapurple;

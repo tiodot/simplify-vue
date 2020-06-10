@@ -1,4 +1,5 @@
 import className from './class'
+import style from './style'
 
 // {create: [], xxx}
 const cbs = {
@@ -9,7 +10,7 @@ const cbs = {
   destroy: []
 }
 
-const modules = [className]
+const modules = [className, style]
 
 for (let mod of modules) {
   Object.keys(mod).forEach(hookName => {
