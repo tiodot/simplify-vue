@@ -1,7 +1,9 @@
 import VNode from './vnode'
 import * as NodeOps from './node-ops'
+import modules from '../modules'
 import {isDef, isUndef, isPrimitive} from '../util'
 
+const emptyNode = new VNode('', {}, [])
 function sameVnode(a, b) {
   return (
     a.key === b.key &&
@@ -37,10 +39,14 @@ function createElm(vnode, parentElm, refElm){
 
   const children = vnode.children
   const tag = vnode.tag
+  const data =  vnode.data
 
   if (isDef(tag)) {
     vnode.elm = NodeOps.createElement(tag)
     createChildren(vnode, children)
+    if (isDef(data)) {
+      invokeCreateHook(vnode)
+    }
     insert(parentElm, vnode.elm, refElm)
   } else {
     vnode.elm = NodeOps.createTextNode(vnode.text)
@@ -89,9 +95,17 @@ function patchVnode(oldVnode, vnode) {
     return
   }
   const elm = (vnode.elm = oldVnode.elm)
+  const data = vnode.data
 
   const oldCh = oldVnode.children
   const ch = vnode.children
+
+  // 针对更新是，触发update的构造
+  if (isDef(data) && isPatchable(vnode)) {
+    for (let updateCb of modules.update) {
+      updateCb(oldVnode, vnode)
+    }
+  }
 
   if (isUndef(vnode.text)) {
     if (isDef(oldCh) && isDef(ch)) {
@@ -107,6 +121,19 @@ function patchVnode(oldVnode, vnode) {
   }
 }
 
+function invokeCreateHook(vnode) {
+  const createCbs = modules.create
+  for (let cb of createCbs) {
+    cb(emptyNode, vnode)
+  }
+}
+
+function isPatchable (vnode) {
+  while(vnode.componentInstance) {
+    vnode = vnode.componentInstance._vnode
+  }
+  return isDef(vnode.tag)
+}
 
 export default function patch(oldVnode, vnode) {
   // 不需要挂载的组件渲染
