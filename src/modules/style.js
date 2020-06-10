@@ -13,7 +13,6 @@ function setProp(el, name, val) {
     el.style.setProperty(name, val);
   } else {
     const normalizedName = camelize(name);
-    console.log('normalizedName', normalizedName)
     if (Array.isArray(val)) {
       for (let i = 0, len = val.length; i < len; i++) {
         el.style[normalizedName] = val[i];
@@ -21,7 +20,6 @@ function setProp(el, name, val) {
     } else {
       el.style[normalizedName] = val;
     }
-    console.log('el.style', el.style)
   }
 }
 
@@ -50,7 +48,6 @@ function updateStyle(oldVnode, vnode) {
   vnode.data.normalizedStyle = isDef(style.__ob__) ? Object.assign({}, style) : style
   
   const newStyle = getStyle(vnode, true)
-  console.log(newStyle, 'newStyle')
 
   for (name in oldStyle) {
     if (isUndef(newStyle[name])) {
