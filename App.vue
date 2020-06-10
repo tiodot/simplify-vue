@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="msg" :class="className">
     {{message}}
   </div>
 </template>
@@ -9,26 +9,22 @@ export default {
   name: 'App',
   data() {
     return {
-      message: '我是一个组件'
+      message: '我是一个组件',
+      className: 'test'
     }
-  },
-  beforeCreate() {
-    console.log('[App.vue hook]: beforeCreate')
-  },
-  created() {
-    console.log('[App.vue hook]: created')
-  },
-  beforeMount() {
-    console.log('[App.vue hook]: beforeMount')
-  },
-  mounted() {
-    console.log('[App.vue hook]: mounted')
-  },
-  beforeUpdate() {
-    console.log('[App.vue hook]: beforeUpdate')
-  },
-  updated() {
-    console.log('[App.vue hook]: updated')
-  },
+  }
 }
 </script>
+
+<style>
+  .msg {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .test {
+    background: rebeccapurple;
+  }
+  .t1 {
+    background: rosybrown;
+  }
+</style>
