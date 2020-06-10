@@ -9,6 +9,7 @@ export function genClassForVnode(vnode) {
       data = mergeClassData(childNode.data, data)
     }
   }
+  console.log('class: ', data)
 
   return renderClass(data.staticClass, data.class)
 }
@@ -22,7 +23,7 @@ function mergeClassData(child, parent) {
 
 export function renderClass (staticClass, dynamicClass) {
   if (isDef(staticClass) || isDef(dynamicClass)) {
-    return concat(staticClass, )
+    return concat(staticClass, dynamicClass)
   }
 }
 
