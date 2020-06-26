@@ -97,3 +97,13 @@ export function def(obj, key, val, enumerable) {
     configurable: true,
   });
 }
+
+export function toObject(arr) {
+  var res = {};
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i]) {
+      Object.assign(res, arr[i])
+    }
+  }
+  return res
+}
