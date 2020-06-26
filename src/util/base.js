@@ -88,3 +88,12 @@ const hyphenateRE = /\B(A-Z)/g
 export const hyphenate = cached(function (str) {
   return str.replace(hyphenateRE, '-$1').toLowerCase()
 })
+
+export function def(obj, key, val, enumerable) {
+  Object.defineProperty(obj, key, {
+    value: val,
+    enumerable: !!enumerable,
+    writable: true,
+    configurable: true,
+  });
+}
