@@ -27,6 +27,9 @@ export default class Vue {
     callHook(this, 'beforeCreate')
     // state
     this._watchers = []
+    // 初始化methods
+    this.initMethods()
+    // 初始化data
     this.initData()
     callHook(this, 'created')
 
@@ -34,6 +37,12 @@ export default class Vue {
       this.$mount(this.$options.el)
     }
 
+  }
+  initMethods() {
+    const methods = this.$options.methods || {}
+    Object.keys(methods).forEach(name => {
+      this[name] = typeof methods[name] ==='function' ? methods[name].bind(this) : noop
+    })
   }
   initData() {
     let data = this.$options.data

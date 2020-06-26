@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     handleClick(evt) {
-      console.log('click event....', evt.target.tag)
+      console.log('click event', evt.target.tagName)
     }
   },
 }

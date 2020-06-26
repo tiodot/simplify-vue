@@ -11,8 +11,8 @@ function updateDOMListeners(oldVnode, vnode) {
   const oldOn = oldVnode.data.on || {}
 
   target = vnode.elm
-
-
+  updateListeners(on, oldOn)
+  target = null
 }
 
 /**
@@ -58,10 +58,10 @@ function remove (name, handler, capture, _target) {
 
 
 /** 该函数在 Vue2中定义在 core/vdom/helpers 目录中的update-listeners文件 */
-export function updateListeners (on, oldOn, vm) {
-  let name, def, cur, old, event
+export function updateListeners (on, oldOn) {
+  let name, cur, old, event
   for (name in on) {
-    def = cur = on[name]
+    cur = on[name]
     old = oldOn[name]
 
     event = normalizeEvent(name)
@@ -69,7 +69,7 @@ export function updateListeners (on, oldOn, vm) {
     if (isDef(cur) && isUndef(old)) {
       // 收集绑定的事件
       if (isUndef(cur.fns)) {
-        cur = on[name] = createFnInvoker(cur, vm)
+        cur = on[name] = createFnInvoker(cur)
       }
 
       if (isTrue(event.once)) {
