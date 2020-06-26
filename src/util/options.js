@@ -1,5 +1,5 @@
 import {LIFECYCLE_HOOKS} from '../constants'
-import {hasOwn} from './base'
+import {hasOwn, camelize, capitalize} from './base'
 const optionsMergeStrategies = Object.create(null)
 
 LIFECYCLE_HOOKS.forEach(hook => {
@@ -56,3 +56,14 @@ function dedupeHooks(hooks) {
   return res
 }
 
+export function resolveAsset(options, type, id) {
+  const assets = options[type]
+  if (hasOwn(assets, id)) return assets[id]
+
+  const camelizeId = camelize(id)
+  if (hasOwn(assets, camelizeId)) return assets[camelizeId]
+
+  const pascalCaseId = capitalize(camelizeId)
+  if (hasOwn(assets, pascalCaseId)) return assets[pascalCaseId]
+  console.error('未找到组件')
+}

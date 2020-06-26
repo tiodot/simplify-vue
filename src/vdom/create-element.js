@@ -1,5 +1,5 @@
 import {createComponent} from './create-component'
-import {makeMap, isPrimitive} from '../util'
+import {makeMap, isPrimitive, isDef, resolveAsset} from '../util'
 import VNode from './vnode'
 
 const isReservedTag = makeMap(
@@ -23,10 +23,14 @@ export function createElement (context, tag, data, children) {
     data = undefined
   }
   if (typeof tag === 'string') {
+    let Ctor = null
     if (isReservedTag(tag)) {
       return new VNode(tag, data, children)
+    } else if (isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
+      // 目标渲染子组件
+      return createComponent(Ctor, data, context, children, tag)
     } else {
-      console.log('TODO:为组件内引入做准备')
+      console.log('暂时不知道什么场景')
     }
     
   } else {
