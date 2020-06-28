@@ -21,6 +21,8 @@ export default class Vue {
     this.$children = []
     this._isMounted = false
 
+    // 初始化事件
+
     // render
     this._vnode = null
     this.$createElement = (tag, data, children) => createElement(this, tag, data, children)
